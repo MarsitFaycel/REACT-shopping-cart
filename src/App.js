@@ -1,8 +1,10 @@
 // feature 1
 import React from 'react';
+import { Provider } from 'react-redux';
 import Filter from './component/filter';
 import Products from './component/products';
 import data from './data/data.json';
+import store from './sotre'
 
 class App extends React.Component {
   constructor(){
@@ -13,7 +15,7 @@ class App extends React.Component {
         sort: ""
     }
   }
-  sortProducts = (event) =>{
+  /* sortProducts = (event) =>{
     // imp
     const sort=  event.target.value
     this.setState((state) =>({
@@ -44,9 +46,10 @@ class App extends React.Component {
     }
    
   }
-  
+   */
   render(){
     return (
+      <Provider store={store}>
       <div className="grid-container">
         <header>
           <a href="/">React shopping</a>
@@ -55,12 +58,7 @@ class App extends React.Component {
         <main>
        <div className="content">
          <div className="main">
-      <Filter count={this.state.products.length} 
-        size={this.state.size}
-        sort={this.state.sort} 
-        filterProducts={this.filterProducts}
-        sortProducts={this.sortProducts}
-        />
+      <Filter />
    
       <Products products={this.state.products} />
          </div>
@@ -75,6 +73,7 @@ class App extends React.Component {
   
         </footer>
       </div>
+      </Provider>
     );
   
   }
