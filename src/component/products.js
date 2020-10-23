@@ -2,30 +2,42 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import formatCurrency from '../util';
 import { fetchProducts } from '../actions/productAction'
-import Fade from "react-reveal/Fade";
+import { Fade } from 'react-reveal/Fade';
+import Modal from 'react-modal';
+import {Zoom} from 'react-reveal/Zoom';
 
 class Products extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            products: null,
+            product: null,
+
         }
     }
     componentDidMount() {
         this.props.fetchProducts();
     }
 
+    openModal = (product) => {
+        this.setState({ product });
+      };
+      closeModal = () => {
+        this.setState({ product: null });
+      };
     render() {
-        console.log(this.props.products);
+        
+        const { product } = this.state;
         return (
             <div>
-                {this.props.products ? (
-                    <Fade bottom cascade>
-                        <ul className="products">
+               
+                    {!this.props.products ?
+                        (<div> Loading</div>  )
+                        : (<ul className="products">
                             {this.props.products.map(product => (
                                 <li key={product._id}>
                                     <div className="product">
-                                        <a href={"#" + product._id}> <img src={product.image} alt={product.title} ></img>
+                                        <a href={"#" + product._id} onClick={() => this.openModal()}
+                                        > <img src={product.image} alt={product.title} ></img>
                                             <p>{product.title}</p>
                                         </a>
                                         <div className="product-price">
@@ -41,13 +53,17 @@ class Products extends Component {
                                 </li>
                             ))}
                         </ul>
-                    </Fade>
+                        
+                        )}
+               
+                {product && (<Modal isOpen={true}>
+                    <Zoom>
+                        <button > close</button>
+                        <div>Modal </div>
+                    </Zoom>
+                </Modal>
 
-                ) :
-                    <div>loading...</div>
-
-
-                }
+                )}
 
             </div>
         );

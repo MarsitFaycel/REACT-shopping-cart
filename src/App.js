@@ -5,6 +5,7 @@ import Cart from './component/cart';
 import Filter from './component/filter';
 import Products from './component/products';
 import data from './data/data.json';
+import { productReducers } from './reducers/productReducers';
 import store from './sotre'
 
 class App extends React.Component {
@@ -52,8 +53,8 @@ class App extends React.Component {
   removeFromCart = (product) => {
     const cartItems = this.state.cartItems.slice();
     this.setState({
-      cartItems: product.count > 0?     
-      cartItems.filter((x) =>x._id === product._id ,product.count--) 
+      cartItems: product.count > 1 ?     
+     ( product.count-- ,cartItems)
       : cartItems.filter((x) => x._id !== product._id),
     });
     localStorage.setItem("cartItems", JSON.stringify(cartItems))
